@@ -1,12 +1,24 @@
 "use client";
 
 import { ProjectsServices } from "@/services/projects";
-import { ProjectsType } from "@/types";
+import { ProjectPutType, ProjectsType } from "@/types";
+import { log } from "console";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function PageAdminProjects() {
   const [projectAddModal, setProjectAddModal] = useState<Boolean>(false);
   const [projects, setProjects] = useState<ProjectsType[]>([]);
+  const [deleteModal, setDeleteModal] = useState<Boolean>(false);
+  const [editModal, setEditModal] = useState<Boolean>(false);
+  const [editData, setEditData] = useState({
+    title: "",
+    description: "",
+    technologies: "",
+    demo_link: "",
+    repo_link: "",
+  });
+  const [id, setId] = useState<Number>();
   useEffect(() => {
     const getProjects = async () => {
       const projectsApi = await ProjectsServices.getProject();
@@ -37,6 +49,20 @@ function PageAdminProjects() {
       console.log("Server xabari:", err.response?.data);
     }
   };
+
+  function ProjectDelete(id: number) {
+    ProjectsServices.deleteProjectId(id);
+  }
+
+  function ProjectEdit() {
+    ProjectsServices.putProjectId(id, {
+      title: editData.title,
+      description: editData.description,
+      technologies: editData.technologies,
+      demo_link: editData.demo_link,
+      repo_link: editData.repo_link,
+    });
+  }
   return (
     <section className="text-white">
       {projectAddModal && (
@@ -102,6 +128,116 @@ function PageAdminProjects() {
           </div>
         </div>
       )}
+
+      {deleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#0A1330] p-6 rounded-xl w-[350px]">
+            <h2 className="text-white text-lg font-semibold mb-3">
+              O‘chirishni tasdiqlaysizmi?
+            </h2>
+
+            <p className="text-gray-400 text-sm mb-5">
+              Bu amalni bekor qilib bo‘lmaydi!
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setDeleteModal(false)}
+                className="px-4 py-2 rounded cursor-pointer bg-gray-600 text-white"
+              >
+                Bekor qilish
+              </button>
+
+              <button
+                onClick={() => ProjectDelete(id)}
+                className="px-4 py-2 rounded cursor-pointer bg-red-600 text-white"
+              >
+                O‘chirish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#0A1330] p-6 rounded-xl w-[420px]">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Projectni tahrirlash
+            </h2>
+
+            <div className="flex flex-col gap-3">
+              <input
+                type="text"
+                placeholder="Title"
+                value={editData.title}
+                onChange={(e) =>
+                  setEditData({ ...editData, title: e.target.value })
+                }
+                className="p-2 rounded bg-[#0f1a3a] text-white outline-none"
+              />
+
+              <textarea
+                placeholder="Description"
+                value={editData.description}
+                onChange={(e) =>
+                  setEditData({ ...editData, description: e.target.value })
+                }
+                className="p-2 rounded bg-[#0f1a3a] text-white outline-none h-20 resize-none"
+              />
+
+              <input
+                type="text"
+                placeholder="Technologies (masalan: React, Next.js)"
+                value={editData.technologies}
+                onChange={(e) =>
+                  setEditData({ ...editData, technologies: e.target.value })
+                }
+                className="p-2 rounded bg-[#0f1a3a] text-white outline-none"
+              />
+
+              <input
+                type="text"
+                placeholder="Demo link"
+                value={editData.demo_link}
+                onChange={(e) =>
+                  setEditData({ ...editData, demo_link: e.target.value })
+                }
+                className="p-2 rounded bg-[#0f1a3a] text-white outline-none"
+              />
+
+              <input
+                type="text"
+                placeholder="Repository link"
+                value={editData.repo_link}
+                onChange={(e) =>
+                  setEditData({ ...editData, repo_link: e.target.value })
+                }
+                className="p-2 rounded bg-[#0f1a3a] text-white outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-3 mt-5">
+              <button
+                onClick={() => setEditModal(false)}
+                className="px-4 py-2 rounded cursor-pointer bg-gray-600 text-white"
+              >
+                Bekor qilish
+              </button>
+
+              <button
+                onClick={() => {
+                  ProjectEdit();
+                }}
+                className="px-4 py-2 cursor-pointer rounded bg-blue-600 text-white"
+              >
+                Saqlash
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <button
           className="btn btn-accent"
@@ -110,6 +246,10 @@ function PageAdminProjects() {
           Yangi Loyiha qo'shish
         </button>
 
+        <h2 className="text-center text-[30px]">Loyihalaringiz</h2>
+        <p className="text-[16px] text-center text-[#7e7e7e]">
+          {projects.length} ta loyiha.
+        </p>
         {/* Projects */}
         <div className="flex gap-10 flex-wrap items-center mt-10">
           {projects.map((project) => {
@@ -118,13 +258,44 @@ function PageAdminProjects() {
                 key={project.id}
                 className="card bg-[#3c4359] cursor-pointer text-[#c2c2c2] w-75 p-4"
               >
-                <h2 className="text-white text-[18px]">
+                <h2 className="text-white text-[18px] cursor-text">
                   Loyiha nomi: {project.title}
                 </h2>
-                <p className="text-[13px]">Izoh: {project.description}</p>
+                <p className="text-[14px] cursor-text">Izoh: {project.description}</p>
+                {/* Socials */}
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={project.demo_link}
+                    className="text-[#fff] underline"
+                  >
+                    Demo
+                  </Link>
+                  <Link
+                    href={project.repo_link}
+                    className="text-[#fff] underline"
+                  >
+                    Repository
+                  </Link>
+                </div>
                 <div className="flex items-center gap-2 mt-4">
-                  <button className="btn btn-error">O'chirish</button>
-                  <button className="btn btn-accent">Tahrirlash</button>
+                  <button
+                    className="btn btn-error"
+                    onClick={() => {
+                      setDeleteModal(true);
+                      setId(project.id);
+                    }}
+                  >
+                    O'chirish
+                  </button>
+                  <button
+                    className="btn btn-accent"
+                    onClick={() => {
+                      setEditModal(true);
+                      setId(project.id);
+                    }}
+                  >
+                    Tahrirlash
+                  </button>
                 </div>
               </div>
             );

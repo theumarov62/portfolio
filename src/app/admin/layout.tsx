@@ -3,11 +3,14 @@ import { LayoutProps } from "@/types";
 import ProtectedRoute from "@/Protected/ProtectedRoute";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function Admin({ children }: LayoutProps) {
   const activePath = usePathname();
+  const router = useRouter();
   function logout() {
-    localStorage.removeItem("token");
+    router.push("/auth/login");
+    return localStorage.removeItem("token");
   }
 
   return (

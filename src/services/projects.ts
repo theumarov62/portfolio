@@ -1,5 +1,5 @@
 import { api } from "@/api/axios";
-import { ProjectsType } from "@/types";
+import { ProjectPutType, ProjectsType } from "@/types";
 
 const ProjectsServices = {
   postProject: (data: ProjectsType) => {
@@ -11,7 +11,14 @@ const ProjectsServices = {
   },
 
   getProjectId: (id: number) => {
-    return api.get(`/api/projects/${id}`);
+    return api.get(`/api/projects/${id}/`);
+  },
+  deleteProjectId: (id: number) => {
+    return api.delete(`/api/projects/${id}/`);
+  },
+
+  putProjectId: (id: number, data: ProjectPutType) => {
+    return api.put(`/api/projects/${id}/`, data);
   },
 };
 

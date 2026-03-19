@@ -14,4 +14,15 @@ export type ProjectsType = {
   repo_link: string;
   order?: number;
 };
-export { LayoutProps, ProjectsType };
+
+export type ProjectPutType = {
+  title: string;
+  description: string;
+  image?: string;
+  technologies: string;
+  demo_link: string;
+  repo_link: string;
+  order?: number;
+};
+
+export { LayoutProps, ProjectsType, ProjectPutType };
