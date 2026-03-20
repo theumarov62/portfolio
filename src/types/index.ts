@@ -4,7 +4,7 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-export type ProjectsType = {
+type ProjectsType = {
   id: number;
   title: string;
   description: string;
@@ -15,7 +15,7 @@ export type ProjectsType = {
   order?: number;
 };
 
-export type ProjectPutType = {
+type ProjectPutType = {
   title: string;
   description: string;
   image?: string;
@@ -25,4 +25,12 @@ export type ProjectPutType = {
   order?: number;
 };
 
-export { LayoutProps, ProjectsType, ProjectPutType };
+type AboutPostType = {
+  title: string;
+  bio: string;
+  image?: string;
+  role: string;
+  order?: string;
+};
+
+export { LayoutProps, ProjectsType, ProjectPutType, AboutPostType };

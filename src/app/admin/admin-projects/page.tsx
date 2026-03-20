@@ -73,53 +73,55 @@ function PageAdminProjects() {
             </h2>
 
             <form onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4">
                 <input
                   type="text"
                   name="title"
                   placeholder="Title"
-                  className="p-2 rounded bg-[#0A1330] text-white outline-none border border-gray-600 focus:border-purple-500"
+                  className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                 />
 
                 <input
                   type="text"
                   name="description"
                   placeholder="Description"
-                  className="p-2 rounded bg-[#0A1330] text-white outline-none border border-gray-600 focus:border-purple-500"
+                  className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                 />
 
                 <input
                   type="text"
                   name="technologies"
                   placeholder="Technologies (e.g. React, Next.js)"
-                  className="p-2 rounded bg-[#0A1330] text-white outline-none border border-gray-600 focus:border-purple-500"
+                  className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                 />
 
                 <input
                   type="text"
                   placeholder="Demo Link"
                   name="demo_link"
-                  className="p-2 rounded bg-[#0A1330] text-white outline-none border border-gray-600 focus:border-purple-500"
+                  className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                 />
 
                 <input
                   type="text"
                   placeholder="Repo Link"
                   name="repo_link"
-                  className="p-2 rounded bg-[#0A1330] text-white outline-none border border-gray-600 focus:border-purple-500"
+                  className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                 />
               </div>
-              <div className="flex justify-end mt-5 gap-2">
+
+              <div className="flex justify-end mt-6 gap-3">
                 <button
                   type="button"
                   onClick={() => setProjectAddModal(false)}
-                  className="px-4 py-2 rounded bg-gray-600 cursor-pointer text-white"
+                  className="px-4 py-2.5 cursor-pointer rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white/80 hover:text-white transition-all duration-200 backdrop-blur-md"
                 >
                   Bekor qilish
                 </button>
+
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded bg-purple-600 cursor-pointer text-white"
+                  className="px-5 py-2.5 cursor-pointer rounded-lg bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-medium shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 active:scale-[0.97]"
                 >
                   Tasdiqlash
                 </button>
@@ -261,7 +263,9 @@ function PageAdminProjects() {
                 <h2 className="text-white text-[18px] cursor-text">
                   Loyiha nomi: {project.title}
                 </h2>
-                <p className="text-[14px] cursor-text">Izoh: {project.description}</p>
+                <p className="text-[14px] cursor-text">
+                  Izoh: {project.description}
+                </p>
                 {/* Socials */}
                 <div className="flex items-center gap-2">
                   <Link
