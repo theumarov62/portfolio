@@ -7,7 +7,7 @@ const ProjectsServices = {
   },
 
   getProject: () => {
-    return api.get("/api/projects");
+    return api.get("/api/projects/");
   },
 
   getProjectId: (id: number) => {

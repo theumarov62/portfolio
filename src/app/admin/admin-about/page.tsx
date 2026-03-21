@@ -11,8 +11,8 @@ function PageAdminAbout() {
   useEffect(() => {
     const aboutGet = async () => {
       const res = await AboutServices.getAbout();
-      setAbout(res.data);
-      console.log(res.data);
+      setAbout(res.data.results);
+      console.log(res.data.results);
     };
 
     aboutGet();
@@ -106,6 +106,27 @@ function PageAdminAbout() {
             </div>
           </div>
         )}
+
+        <div className="mt-4 flex items-center justify-between">
+          {about.map((item) => {
+            return (
+              <div
+                key={item.id}
+                className="card bg-[#3c4359] cursor-pointer text-[#c2c2c2] w-75 p-4"
+              >
+                <h2 className="text-white text-[18px] cursor-text">
+                  About nomi: {item.name}
+                </h2>
+                <p className="text-[14px] cursor-text">Izoh: {item.bio}</p>
+
+                <div className="flex items-center gap-2 mt-4">
+                  <button className="btn btn-error">O'chirish</button>
+                  <button className="btn btn-accent">Tahrirlash</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

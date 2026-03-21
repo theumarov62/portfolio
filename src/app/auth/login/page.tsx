@@ -14,8 +14,10 @@ function PageLogin() {
     try {
       const res = await LoginServices.postLogin({ email, password });
       const token = res.data.access;
+      const refreshToken = res.data.refresh;
       console.log("Token", token);
       localStorage.setItem("token", token);
+      localStorage.setItem("refresh", refreshToken);
       router.push("/admin");
     } catch (err) {
       console.log("Xatolik ", err);
