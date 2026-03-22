@@ -5,7 +5,7 @@ type LayoutProps = {
 };
 
 type ProjectsType = {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   image?: string;
@@ -26,10 +26,11 @@ type ProjectPutType = {
 };
 
 type AboutPostType = {
-  title: string;
+  name: string;
   bio: string;
   image?: string;
   role: string;
+  cv_link: string;
   order?: string;
 };
 
@@ -41,20 +42,37 @@ type AboutPutType = {
   cv_link: string;
 };
 
+type AboutType = {
+  id: number;
+  name: string;
+  role: string;
+  bio: string;
+  image?: string;
+  cv_link: string;
+};
+
 type SkillsPostType = {
   name: string;
   icon: string;
   percentage: number;
 };
 
+type SkillsType = {
+  id: number;
+  name: string;
+  icon: string;
+  percentage: number;
+};
+
 type ExperienceType = {
+  id: number;
   role: string;
   company: string;
   start_date: string;
   end_date: string;
   description: string;
 };
-export {
+export type {
   LayoutProps,
   ProjectsType,
   ProjectPutType,
@@ -62,4 +80,6 @@ export {
   AboutPutType,
   SkillsPostType,
   ExperienceType,
+  AboutType,
+  SkillsType,
 };

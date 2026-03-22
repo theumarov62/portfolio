@@ -1,14 +1,17 @@
 "use client";
 import { SkillsServices } from "@/services/skills";
+import { SkillsType } from "@/types";
 
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 function PageAdminSkills() {
-  const [skills, setSkills] = useState([]);
-  const [editModal, setEditModal] = useState<Boolean>(false);
-  const [addModal, setAddModal] = useState<Boolean>(false);
+  const [skills, setSkills] = useState<SkillsType[]>([]);
+
+  const [editModal, setEditModal] = useState<boolean>(false);
+  const [addModal, setAddModal] = useState<boolean>(false);
   const [id, setId] = useState<number>(0);
-  const [deleteModal, setDeleteModal] = useState<Boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   useEffect(() => {
     async function getSkills() {
       const res = await SkillsServices.getSkills();

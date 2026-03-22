@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function PageAdminProjects() {
-  const [projectAddModal, setProjectAddModal] = useState<Boolean>(false);
+  const [projectAddModal, setProjectAddModal] = useState<boolean>(false);
   const [projects, setProjects] = useState<ProjectsType[]>([]);
-  const [deleteModal, setDeleteModal] = useState<Boolean>(false);
-  const [editModal, setEditModal] = useState<Boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [editModal, setEditModal] = useState<boolean>(false);
   const [editData, setEditData] = useState({
     title: "",
     description: "",
@@ -19,7 +19,7 @@ function PageAdminProjects() {
     demo_link: "",
     repo_link: "",
   });
-  const [id, setId] = useState<Number>(0);
+  const [id, setId] = useState<number>(0);
   useEffect(() => {
     const getProjects = async () => {
       const projectsApi = await ProjectsServices.getProject();
@@ -35,11 +35,11 @@ function PageAdminProjects() {
     const form = e.currentTarget;
 
     const data = {
-      title: form.title.value,
-      description: form.description.value,
-      technologies: form.technologies.value,
-      demo_link: form.demo_link.value,
-      repo_link: form.repo_link.value,
+      title: form.title,
+      description: form.description,
+      technologies: form.technologies,
+      demo_link: form.demo_link,
+      repo_link: form.repo_link,
     };
 
     try {
@@ -299,8 +299,10 @@ function PageAdminProjects() {
                   <button
                     className="btn btn-error"
                     onClick={() => {
-                      setDeleteModal(true);
-                      setId(project.id);
+                      if (project.id !== undefined) {
+                        setDeleteModal(true);
+                        setId(project.id);
+                      }
                     }}
                   >
                     O'chirish
@@ -308,8 +310,10 @@ function PageAdminProjects() {
                   <button
                     className="btn btn-accent"
                     onClick={() => {
-                      setEditModal(true);
-                      setId(project.id);
+                      if (project.id !== undefined) {
+                        setEditModal(true);
+                        setId(project.id);
+                      }
                     }}
                   >
                     Tahrirlash

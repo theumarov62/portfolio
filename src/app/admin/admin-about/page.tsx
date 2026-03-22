@@ -2,7 +2,7 @@
 
 import { AboutServices } from "@/services/about";
 import React, { useEffect, useState } from "react";
-import { AboutPostType } from "@/types";
+import { AboutPostType, AboutType } from "@/types";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
@@ -16,8 +16,8 @@ function PageAdminAbout() {
     cv_link: "",
     bio: "",
   });
-  const [id, setId] = useState<Number>(0);
-  const [about, setAbout] = useState([]);
+  const [id, setId] = useState<number>(0);
+  const [about, setAbout] = useState<AboutType[]>([]);
 
   useEffect(() => {
     const aboutGet = async () => {

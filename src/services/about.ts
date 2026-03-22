@@ -10,7 +10,7 @@ export const AboutServices = {
     return api.get(`/api/about/${id}`);
   },
 
-  postAbout: (data: AboutPostType) => {
+  postAbout: (data: object) => {
     return api.post("/api/about/", data);
   },
 
@@ -18,7 +18,7 @@ export const AboutServices = {
     return api.delete(`/api/about/${id}/`);
   },
 
-  putAboutId: (id: number, data: AboutPutType) => {
+  putAboutId: (id: number, data: object) => {
     return api.put(`/api/about/${id}/`, data);
   },
 };

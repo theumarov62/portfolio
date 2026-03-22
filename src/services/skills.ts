@@ -10,11 +10,11 @@ export const SkillsServices = {
     return api.delete(`/api/skills/${id}/`);
   },
 
-  postSkill: (data: SkillsPostType) => {
+  postSkill: (data: object) => {
     return api.post("/api/skills/", data);
   },
 
-  putSkill: (id: number, data: SkillsPostType) => {
+  putSkill: (id: number, data: object) => {
     return api.put(`/api/skills/${id}/`, data);
   },
 };

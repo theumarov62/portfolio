@@ -7,12 +7,13 @@ import toast from "react-hot-toast";
 function PageAdminExperiences() {
   const [id, setId] = useState<number>(0);
   const [experiences, setExperiences] = useState<ExperienceType[]>([]);
-  const [addModal, setAddModal] = useState<Boolean>(false);
-  const [editModal, setEditModal] = useState<Boolean>(false);
-  const [deleteModal, setDeleteModal] = useState<Boolean>(false);
-  const [submit, setSubmit] = useState<Boolean>(false);
+  const [addModal, setAddModal] = useState<boolean>(false);
+  const [editModal, setEditModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [submit, setSubmit] = useState<boolean>(false);
 
   const [editData, setEditData] = useState<ExperienceType>({
+    id: 0,
     company: "",
     role: "",
     start_date: "",
@@ -25,7 +26,7 @@ function PageAdminExperiences() {
         const res = await ExperiencesServices.getExperiences();
         setExperiences(res.data.results);
         console.log(res.data.results);
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.response?.data);
       }
     };
