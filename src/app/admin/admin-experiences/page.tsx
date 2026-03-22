@@ -1,70 +1,93 @@
 "use client";
-import { SkillsServices } from "@/services/skills";
+import { ExperiencesServices } from "@/services/experiences";
+import { ExperienceType } from "@/types";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-import React, { useEffect, useState } from "react";
-
-function PageAdminSkills() {
-  const [skills, setSkills] = useState([]);
-  const [editModal, setEditModal] = useState<Boolean>(false);
-  const [addModal, setAddModal] = useState<Boolean>(false);
+function PageAdminExperiences() {
   const [id, setId] = useState<number>(0);
+  const [experiences, setExperiences] = useState<ExperienceType[]>([]);
+  const [addModal, setAddModal] = useState<Boolean>(false);
+  const [editModal, setEditModal] = useState<Boolean>(false);
   const [deleteModal, setDeleteModal] = useState<Boolean>(false);
+  const [submit, setSubmit] = useState<Boolean>(false);
+
+  const [editData, setEditData] = useState<ExperienceType>({
+    company: "",
+    role: "",
+    start_date: "",
+    end_date: "",
+    description: "",
+  });
   useEffect(() => {
-    async function getSkills() {
-      const res = await SkillsServices.getSkills();
-      setSkills(res.data.results);
+    const fetchExperiences = async () => {
+      try {
+        const res = await ExperiencesServices.getExperiences();
+        setExperiences(res.data.results);
+        console.log(res.data.results);
+      } catch (err) {
+        console.log(err.response?.data);
+      }
+    };
 
-      console.log(res.data.results);
-    }
-
-    getSkills();
+    fetchExperiences();
   }, []);
-
   async function Add(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    if (submit) return;
+    setSubmit(true);
 
     try {
-      const res = await SkillsServices.postSkill(formData);
-      console.log("Post res", res.data);
+      const res = await ExperiencesServices.postExperience(formData);
+      console.log(res.data);
       toast.success("Muvaffaqiyatli qo'shildi!");
       setAddModal(false);
     } catch (err: any) {
-      console.error(err.response?.data);
+      console.log(err.response?.data);
+    } finally {
+      setSubmit(false);
     }
   }
 
   async function Edit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-
+    if (submit) return;
+    setSubmit(true);
     try {
-      const res = await SkillsServices.putSkill(id, formData);
-      console.log("Put res", res.data);
+      const res = await ExperiencesServices.putExperience(id, formData);
+      console.log(res.data);
       toast.success("Muvaffaqiyatli tahrirlandi!");
       setEditModal(false);
     } catch (err: any) {
-      console.error(err.response?.data);
+      console.log(err.response?.data);
+    } finally {
+      setEditModal(false);
+      setSubmit(false);
     }
   }
 
   async function Delete() {
+    if (submit) return;
+    setSubmit(true);
     try {
-      const res = await SkillsServices.deleteSkill(id);
-      console.log("Delete res", res.data);
+      const res = await ExperiencesServices.deleteExperience(id);
+      console.log(res.data);
       toast.success("Muvaffaqiyatli o'chirildi!");
       setDeleteModal(false);
     } catch (err: any) {
-      console.error(err.response?.data);
+      console.log(err.response?.data);
+    } finally {
+      setSubmit(false);
     }
   }
-
   return (
     <section>
       <div>
         <div>
-          <button className="btn btn-accent" onClick={() => setAddModal(true)}>
-            Yangi Skill qo'shish
+          <button className="btn-accent btn" onClick={() => setAddModal(true)}>
+            Yangi experiences qo'shish
           </button>
         </div>
         <div>
@@ -85,31 +108,43 @@ function PageAdminSkills() {
                   </h2>
 
                   {/* FORM */}
-                  <form className="flex flex-col gap-4" onSubmit={Add}>
-                    {/* NAME */}
+                  <form onSubmit={Add} className="flex flex-col gap-4">
+                    {/* COMPANY */}
                     <input
                       type="text"
-                      placeholder="Name"
-                      name="name"
+                      placeholder="Company"
+                      name="company"
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                     />
 
-                    {/* Image */}
+                    {/* ROLE */}
                     <input
-                      type="file"
-                      placeholder="image"
-                      name="icon"
+                      type="text"
+                      placeholder="Role"
+                      name="role"
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                     />
 
-                    {/* Percentage */}
+                    {/* START DATE */}
                     <input
-                      type="number"
-                      min={0}
-                      max={100}
-                      placeholder="Percentage"
-                      name="percentage"
+                      type="text"
+                      placeholder="Start Date"
+                      name="start_date"
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
+                    />
+                    {/* END DATE */}
+                    <input
+                      type="text"
+                      placeholder="End Date"
+                      name="end_date"
+                      className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
+                    />
+                    {/* DESCRIPTION */}
+                    <textarea
+                      placeholder="Description"
+                      rows={3}
+                      name="description"
+                      className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200 resize-none"
                     />
 
                     {/* BUTTON */}
@@ -142,39 +177,76 @@ function PageAdminSkills() {
                   </h2>
 
                   {/* FORM */}
-                  <form className="flex flex-col gap-4" onSubmit={Edit}>
-                    {/* NAME */}
+                  <form onSubmit={Edit} className="flex flex-col gap-4">
+                    {/* Company */}
                     <input
                       type="text"
-                      placeholder="Name"
-                      name="name"
+                      placeholder="Company"
+                      name="company"
+                      value={editData.company}
+                      onChange={(e) =>
+                        setEditData({ ...editData, company: e.target.value })
+                      }
+                      className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
+                    />
+                    {/* Role */}
+                    <input
+                      type="text"
+                      placeholder="Role"
+                      name="role"
+                      value={editData.role}
+                      onChange={(e) =>
+                        setEditData({ ...editData, role: e.target.value })
+                      }
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                     />
 
-                    {/* Image */}
+                    {/* Start Date */}
                     <input
-                      type="file"
-                      placeholder="image"
-                      name="icon"
+                      type="text"
+                      placeholder="Start Date"
+                      value={editData.start_date}
+                      onChange={(e) =>
+                        setEditData({ ...editData, start_date: e.target.value })
+                      }
+                      name="start_date"
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
                     />
 
-                    {/* Percentage */}
+                    {/* End date */}
                     <input
-                      type="number"
-                      min={0}
-                      max={100}
-                      placeholder="Percentage"
-                      name="percentage"
+                      type="text"
+                      placeholder="End Date"
+                      value={editData.end_date}
+                      onChange={(e) =>
+                        setEditData({ ...editData, end_date: e.target.value })
+                      }
+                      name="end_date"
                       className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200"
+                    />
+
+                    {/* Description */}
+                    <textarea
+                      placeholder="Description"
+                      rows={3}
+                      name="description"
+                      value={editData.description}
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          description: e.target.value,
+                        })
+                      }
+                      className="px-3 py-2.5 rounded-lg bg-[#081028]/80 text-white placeholder:text-gray-400 outline-none border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all duration-200 resize-none"
                     />
 
                     {/* BUTTON */}
                     <button
                       type="submit"
+                      disabled={submit}
                       className="mt-3 cursor-pointer bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white py-2.5 rounded-lg font-medium tracking-wide shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 active:scale-[0.98]"
                     >
-                      Save
+                      {submit ? "Saqlanmoqda..." : "Saqlash"}
                     </button>
                   </form>
                 </div>
@@ -205,41 +277,39 @@ function PageAdminSkills() {
                     className="px-4 py-2 rounded cursor-pointer bg-red-600 text-white"
                     onClick={() => Delete()}
                   >
-                    O‘chirish
+                    {submit ? "O'chirilmoqda..." : "O'chirish"}
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="flex flex-wrap gap-4 mt-4">
-            {skills.map((item) => {
+          <div className="mt-6 flex flex-wrap gap-4">
+            {experiences.map((item) => {
               return (
                 <div
                   key={item.id}
-                  className="rounded-2xl flex-col flex justify-between h-50 p-4 bg-[#3c4359] text-[#c2c2c2] w-75"
+                  className="rounded-2xl flex flex-col justify-between h-50 p-4 bg-[#3c4359] cursor-pointer text-[#c2c2c2] w-75"
                 >
                   <div>
                     <h2 className="text-white text-[18px] cursor-text">
-                      Skill nomi: {item.name}
+                      Experiences: {item.company}
                     </h2>
-                    <img
-                      src={item.icon}
-                      alt={item.icon ? item.name : "No image"}
-                      className="w-8 h-8 rounded-full"
-                    />
+                    <p className="text-[14px] cursor-text">
+                      Izoh: {item.description}
+                    </p>
 
                     <p className="text-[14px] cursor-text">
-                      Foiz: {item.percentage}
+                      Lavozim: {item.role}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mt-4">
                     <button
                       className="btn btn-error"
                       onClick={() => {
-                        setId(item.id);
                         setDeleteModal(true);
+                        setId(item.id);
                       }}
                     >
                       O'chirish
@@ -264,4 +334,4 @@ function PageAdminSkills() {
   );
 }
 
-export default PageAdminSkills;
+export default PageAdminExperiences;

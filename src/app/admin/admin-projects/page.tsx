@@ -5,6 +5,7 @@ import { ProjectPutType, ProjectsType } from "@/types";
 import { log } from "console";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 function PageAdminProjects() {
   const [projectAddModal, setProjectAddModal] = useState<Boolean>(false);
@@ -18,7 +19,7 @@ function PageAdminProjects() {
     demo_link: "",
     repo_link: "",
   });
-  const [id, setId] = useState<Number>();
+  const [id, setId] = useState<Number>(0);
   useEffect(() => {
     const getProjects = async () => {
       const projectsApi = await ProjectsServices.getProject();
@@ -44,24 +45,37 @@ function PageAdminProjects() {
     try {
       const res = await ProjectsServices.postProject(data);
       console.log(res.data);
+      toast.success("Muvaffaqiyatli qo'shildi!");
       setProjectAddModal(false);
     } catch (err: any) {
       console.log("Server xabari:", err.response?.data);
     }
   };
 
-  function ProjectDelete(id: number) {
-    ProjectsServices.deleteProjectId(id);
+  async function ProjectDelete(id: number) {
+    try {
+      const res = await ProjectsServices.deleteProjectId(id);
+      console.log(res.data);
+      toast.success("Muvaffaqiyatli o'chirildi!");
+      setDeleteModal(false);
+    } catch (err: any) {
+      console.log(err.response?.data);
+    }
   }
 
-  function ProjectEdit() {
-    ProjectsServices.putProjectId(id, {
-      title: editData.title,
-      description: editData.description,
-      technologies: editData.technologies,
-      demo_link: editData.demo_link,
-      repo_link: editData.repo_link,
-    });
+  async function ProjectEdit() {
+    try {
+      ProjectsServices.putProjectId(id, {
+        title: editData.title,
+        description: editData.description,
+        technologies: editData.technologies,
+        demo_link: editData.demo_link,
+        repo_link: editData.repo_link,
+      });
+      toast.success("Muvaffaqiyatli tahrirlandi!");
+    } catch (err: any) {
+      console.log(err.response?.data);
+    }
   }
   return (
     <section className="text-white">

@@ -4,10 +4,13 @@ import ProtectedRoute from "@/Protected/ProtectedRoute";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 function Admin({ children }: LayoutProps) {
   const activePath = usePathname();
   const router = useRouter();
+  const [logoutModal, setLogoutModal] = useState<Boolean>(false);
   function logout() {
     router.push("/auth/login");
     return localStorage.removeItem("token");
@@ -15,7 +18,32 @@ function Admin({ children }: LayoutProps) {
 
   return (
     <ProtectedRoute>
-      <div className="flex h-screen bg-[#081028]">
+      {logoutModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#0A1330] p-6 gap-4 flex flex-col items-center rounded-xl w-[350px]">
+            <h2 className="text-white text-lg text-center font-semibold mb-3">
+              Chiqishni tasdiqlaysizmi?
+            </h2>
+
+            <div className="flex justify-center items-center gap-3">
+              <button
+                onClick={() => setLogoutModal(false)}
+                className="px-4 py-2 rounded cursor-pointer bg-gray-600 text-white"
+              >
+                Bekor qilish
+              </button>
+
+              <button
+                className="px-4 py-2 rounded cursor-pointer bg-red-600 text-white"
+                onClick={() => logout()}
+              >
+                Chiqish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex min-h-svh bg-[#081028]">
         <aside className="w-75 bg-[#081028] text-white p-4 flex flex-col border-2 border-[#1a1c23]/60">
           <div className="mb-4">
             <Link href={"/admin"} className="text-[35px]">
@@ -86,10 +114,31 @@ function Admin({ children }: LayoutProps) {
               )}
               Skills
             </Link>
+            <Link
+              href="/admin/admin-experiences"
+              className="border relative pl-3.5 h-10.5 duration-300 transition-border border-[#2b2c2d]/60 rounded flex items-center hover:border-[#CB3CFF]"
+              style={{
+                backgroundColor:
+                  activePath === "/admin/admin-experiences"
+                    ? "#0A1330"
+                    : "transparent",
+              }}
+            >
+              {activePath === "/admin/admin-experiences" ? (
+                <img
+                  src="/link-active.svg"
+                  alt="Link background"
+                  className="absolute left-0"
+                />
+              ) : (
+                []
+              )}
+              Experiences
+            </Link>
           </nav>
           <div className="fixed bottom-4">
             <button
-              onClick={() => logout()}
+              onClick={() => setLogoutModal(true)}
               className="cursor-pointer flex gap-2 items-center w-[241px] h-[46px] justify-center hover:bg-transparent duration-300 transition-all border-transparent border hover:border-[#CB3CFF]/40 active:opacity-60 rounded-sm bg-[#CB3CFF]"
             >
               Chiqish
@@ -126,6 +175,7 @@ function Admin({ children }: LayoutProps) {
         {/* Main content */}
         <main className="flex-1 p-4 bg-[#081028]">{children}</main>
       </div>
+      <Toaster position="top-right" />
     </ProtectedRoute>
   );
 }

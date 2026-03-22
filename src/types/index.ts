@@ -33,4 +33,33 @@ type AboutPostType = {
   order?: string;
 };
 
-export { LayoutProps, ProjectsType, ProjectPutType, AboutPostType };
+type AboutPutType = {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  cv_link: string;
+};
+
+type SkillsPostType = {
+  name: string;
+  icon: string;
+  percentage: number;
+};
+
+type ExperienceType = {
+  role: string;
+  company: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+};
+export {
+  LayoutProps,
+  ProjectsType,
+  ProjectPutType,
+  AboutPostType,
+  AboutPutType,
+  SkillsPostType,
+  ExperienceType,
+};

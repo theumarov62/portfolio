@@ -1,5 +1,5 @@
 import { api } from "@/api/axios";
-import { AboutPostType } from "@/types";
+import { AboutPostType, AboutPutType } from "@/types";
 
 export const AboutServices = {
   getAbout: () => {
@@ -15,10 +15,10 @@ export const AboutServices = {
   },
 
   deleteAboutId: (id: number) => {
-    return api.delete(`/api/about/${id}`);
+    return api.delete(`/api/about/${id}/`);
   },
 
-  putAboutId: (id: number, data: object) => {
-    return api.put(`/api/about/${id}`, data);
+  putAboutId: (id: number, data: AboutPutType) => {
+    return api.put(`/api/about/${id}/`, data);
   },
 };
