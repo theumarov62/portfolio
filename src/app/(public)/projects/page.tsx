@@ -1,11 +1,9 @@
-import { Metadata } from "next";
+import React from 'react'
 
-export const metadata: Metadata = {
-  title: "Projects - Abdulloh Umarov",
-  description: "Abdulloh Umarovning projects bo‘limi",
-};
 function PageProjects() {
-  return <section>PageProjects</section>;
+  return (
+    <section>PageProjects</section>
+  )
 }
 
-export default PageProjects;
+export default PageProjects
