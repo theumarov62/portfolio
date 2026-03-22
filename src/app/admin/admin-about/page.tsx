@@ -19,13 +19,12 @@ function PageAdminAbout() {
   const [id, setId] = useState<number>(0);
   const [about, setAbout] = useState<AboutType[]>([]);
 
+  const aboutGet = async () => {
+    const res = await AboutServices.getAbout();
+    setAbout(res.data.results);
+    console.log(res.data.results);
+  };
   useEffect(() => {
-    const aboutGet = async () => {
-      const res = await AboutServices.getAbout();
-      setAbout(res.data.results);
-      console.log(res.data.results);
-    };
-
     aboutGet();
   }, []);
 
@@ -54,6 +53,7 @@ function PageAdminAbout() {
       console.log(res.data);
       toast.success("Muvaffaqiyatli tahrirlandi!");
       setEditModal(false);
+      aboutGet();
     } catch (err: any) {
       console.error(err.response?.data);
     }
