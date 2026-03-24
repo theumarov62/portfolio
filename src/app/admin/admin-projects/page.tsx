@@ -34,13 +34,17 @@ function PageAdminProjects() {
     e.preventDefault();
     const form = e.currentTarget;
 
+    const formData = new FormData(form);
+
     const data = {
-      title: form.title,
-      description: form.description,
-      technologies: form.technologies,
-      demo_link: form.demo_link,
-      repo_link: form.repo_link,
+      title: formData.get("title"),
+      description: formData.get("description"),
+      technologies: formData.get("technologies")?.toString().trim(),
+      demo_link: formData.get("demo_link"),
+      repo_link: formData.get("repo_link"),
     };
+
+    console.log("Yuborilayotgan data:", data);
 
     try {
       const res = await ProjectsServices.postProject(data);
@@ -48,6 +52,7 @@ function PageAdminProjects() {
       toast.success("Muvaffaqiyatli qo'shildi!");
       setProjectAddModal(false);
     } catch (err: any) {
+      console.log("FULL ERROR:", err);
       console.log("Server xabari:", err.response?.data);
     }
   };
