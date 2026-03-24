@@ -1,5 +1,6 @@
 "use client";
 import { LoginServices } from "@/services/login";
+import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -26,10 +27,17 @@ function PageLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#081028]">
-      <div className="bg-[#0A1330] p-8 rounded-xl w-full max-w-sm shadow-lg">
+      <div className="bg-[#0A1330] relative p-8 rounded-xl w-full max-w-sm shadow-lg">
         <h2 className="text-white text-2xl font-semibold mb-6 text-center">
           Login
         </h2>
+
+        <Link
+          href={"/"}
+          className="underline absolute top-4 rounded-md border border-[white] p-0.5 text-sm hover:bg-white hover:text-black duration-200 active:opacity-80 transition"
+        >
+          Back
+        </Link>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <input
